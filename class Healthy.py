@@ -1,3 +1,5 @@
+import random
+
 class Healthy:
     def __init__(self):
         self.x = 0 # starting x position
