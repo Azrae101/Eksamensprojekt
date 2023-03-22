@@ -39,7 +39,7 @@ class Game:
                 # If the mouse button is clicked on the button, add a new Healthy object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
                     # Add a new Healthy object
-                    new_healthy = Healthy #
+                    new_healthy = Healthy 
                     self.all_sprites.add(new_healthy)
                     self.health_count += 1
 
