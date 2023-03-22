@@ -1,28 +1,42 @@
+# Game class
+
+# Import necessary libraries
 import pygame
 import sys
 import random
 
+# Define the game class
 class Game:
+    # Initialize the game
     def __init__(self):
+        # Initialize pygame
         pygame.init()
+        # Set screen dimensions
         self.screen_width = 640
         self.screen_height = 480
+
+        # Set the screen and clock
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         self.fps = 60
+
+        # Set initial health count and create a sprite group for all sprites
         self.health_count = 0
         self.all_sprites = pygame.sprite.Group()
 
-        # Create a button
+        # Create a button for adding healthy objects and set its text
         self.button = pygame.Rect(10, 420, 120, 40)
         self.button_text = pygame.font.SysFont('Arial' , 24).render('Add Healthy', True, (255, 255, 255))
 
+    # Run the game
     def run(self):
         running = True
         while running:
+            # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                # If the mouse button is clicked on the button, add a new Healthy object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
                     # Add a new Healthy object
                     new_healthy = Healthy #
@@ -44,14 +58,21 @@ class Game:
 
             # Update the screen
             pygame.display.flip()
+
+            # Control the FPS
             self.clock.tick(self.fps)
 
+
+# Define the healthy class, which is a sprite:
 class Healthy:
+    # Initialize the Healthy object
     def __init__(self):
         self.x = 0 # starting x position
         self.y = 0 # starting y position
         self.animation_index = 0 # Starting animation index
         self.animation_frames = [
+
+        # Set the image and rect for the Healthy object
             # List of 3 images for each animation direction
             ["running_up_1.png", "running_up_2.png", "running_up_3.png"],
             ["running_down_1.png", "running_down_2.png", "running_down_3.png"],
@@ -65,7 +86,9 @@ class Healthy:
         self.x += dx
         self.y += dy
     
+    # Update the Healthy object
     def animate(self): # Displays the animation frame of the character
+        # Move the Healthy object randomly
         animation_frame = self.animation_frames[self.animation_index]
         for row in animation_frame:
             print(''.join(row))
@@ -75,6 +98,7 @@ class Healthy:
         while True:
             self.move_randomly()
             self.animate()
+
 
 # Create and run the game
 game = Game()
