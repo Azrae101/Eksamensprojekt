@@ -3,73 +3,57 @@
 
 import pygame
 import sys
+import random
 
+class Game: 
+	def __init__(self): 
+		pygame.init() 
+		self.screen_width = 640 
+		self.screen_height = 480
+		self.screen = pygame.display.set_mode((self.screen_width, self.screen_height)) 
+		self.clock = pygame.time.Clock() 
+		self.fps = 60 
+		self.health_count = 0 
+		self.all_sprites = pygame.sprite.Group() 
 
-# initializing the constructor
-pygame.init()
+# Create a button 
+		self.button = pygame.Rect(50, 50, 100, 50) 
+		self.button_text = pygame.font.SysFont('Arial', 24).render('Add Healthy', True, (255, 255, 255)) 
 
-# screen resolution
-res = (720,720)
+def run(self): 
+	running = True 
+	while running: 
+		for event in pygame.event.get(): 
+			if event.type == pygame.QUIT: 
+				running = False 
+			elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos): 
 
-# opens up a window
-screen = pygame.display.set_mode(res)
+# Add a new Healthy object 
+	new_healthy = Healthy() 
+	self.all_sprites.add(new_healthy) 
+	self.health_count += 1 
 
-# white color
-color = (255,255,255)
+# Draw the button and health count 
+	pygame.draw.rect(self.screen, (0, 0, 255), self.button)
+	self.screen.blit(self.button_text, self.button.center) 
+	health_count_text = pygame.font.SysFont('Arial', 24).render(f'Health Count: {self.health_count}', True, (255, 255, 255)) 
+	self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 10, 10))
 
-# light shade of the button
-color_light = (170,170,170)
+# Update and draw all sprites 
+	self.all_sprites.update() 
+	self.all_sprites.draw(self.screen) 
 
-# dark shade of the button
-color_dark = (100,100,100)
+	pygame.display.flip() 
+	self.clock.tick(self.fps) 
 
-# stores the width of the
-# screen into a variable
-width = screen.get_width()
+class Healthy(pygame.sprite.Sprite): 
+	def __init__(self): 
+		super().__init__() 
+		self.image = pygame.Surface((30, 30)) 
+		self.image.fill((0, 255, 0)) 
+		self.rect = self.image.get_rect() 
+		self.rect.center = (random.randint(0, 640), random.randint(0, 480)) def update(self): 
+		self.rect.move_ip(random.randint(-5, 5), random.randint(-5, 5)) 
 
-# stores the height of the
-# screen into a variable
-height = screen.get_height()
-
-# defining a font
-smallfont = pygame.font.SysFont('Corbel',35)
-
-# rendering a text written in
-# this font
-text = smallfont.render('quit' , True , color)
-
-while True:
-	
-	for ev in pygame.event.get():
-		
-		if ev.type == pygame.QUIT:
-			pygame.quit()
-			
-		#checks if a mouse is clicked
-		if ev.type == pygame.MOUSEBUTTONDOWN:
-			
-			#if the mouse is clicked on the
-			# button the game is terminated
-			if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40:
-				pygame.quit()
-				
-	# fills the screen with a color
-	screen.fill((60,25,60))
-	
-	# stores the (x,y) coordinates into
-	# the variable as a tuple
-	mouse = pygame.mouse.get_pos()
-	
-	# if mouse is hovered on a button it
-	# changes to lighter shade
-	if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40:
-		pygame.draw.rect(screen,color_light,[width/2,height/2,140,40])
-		
-	else:
-		pygame.draw.rect(screen,color_dark,[width/2,height/2,140,40])
-	
-	# superimposing the text onto our button
-	screen.blit(text , (width/2+50,height/2))
-	
-	# updates the frames of the game
-	pygame.display.update()
+game = Game() 
+game.run()
