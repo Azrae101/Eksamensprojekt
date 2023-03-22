@@ -1,30 +1,43 @@
+# Game class
+
+# Import necessary libraries
 import pygame
 import sys
 import random
 
+# Define the game class
 class Game:
+    # Initialize the game
     def __init__(self):
+        # Initialize pygame
         pygame.init()
+        # Set screen dimensions
         self.screen_width = 640
         self.screen_height = 480
+
+        # Set the screen and clock
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
         self.fps = 60
+
+        # Set initial health count and create a sprite group for all sprites
         self.health_count = 0
         self.all_sprites = pygame.sprite.Group()
 
-        # Create a button
+        # Create a button for adding healthy objects and set its text
         self.button = pygame.Rect(50, 50, 100, 50)
         self.button_text = pygame.font.SysFont('Arial', 24).render('Add Healthy', True, (255, 255, 255))
 
+    # Run the game
     def run(self):
         running = True
         while running:
+            # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                # If the mouse button is clicked on the button, add a new Healthy object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
-                    # Add a new Healthy object
                     new_healthy = Healthy(self.screen, self.screen_width, self.health_count)
                     self.all_sprites.add(new_healthy)
                     self.health_count += 1
@@ -44,21 +57,31 @@ class Game:
 
             # Update the screen
             pygame.display.flip()
+
+            # Control the FPS
             self.clock.tick(self.fps)
 
+
+# Define the healthy class, which is a sprite:
 class Healthy(pygame.sprite.Sprite):
+    # Initialize the Healthy object
     def __init__(self, screen, screen_width, health_count):
         super().__init__()
         self.screen = screen
         self.screen_width = screen_width
         self.health_count = health_count
+
+        # Set the image and rect for the Healthy object
         self.image = pygame.Surface((30, 30))
         self.image.fill((0, 255, 0))
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(0, 640), random.randint(0, 480))
 
+    # Update the Healthy object
     def update(self):
+        # Move the Healthy object randomly
         self.rect.move_ip(random.randint(-5, 5), random.randint(-5, 5))
+
 
 # Create and run the game
 game = Game()
