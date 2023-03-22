@@ -14,8 +14,8 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
 
         # Create a button
-        self.button = pygame.Rect(50, 50, 100, 50)
-        self.button_text = pygame.font.SysFont('Arial', 24).render('Add Healthy', True, (255, 255, 255))
+        self.button = pygame.Rect(10, 420, 120, 40)
+        self.button_text = pygame.font.SysFont('Arial' , 24).render('Add Healthy', True, (255, 255, 255))
 
     def run(self):
         running = True
@@ -25,7 +25,7 @@ class Game:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
                     # Add a new Healthy object
-                    new_healthy = Healthy(self.screen, self.screen_width, self.health_count)
+                    new_healthy = Healthy #
                     self.all_sprites.add(new_healthy)
                     self.health_count += 1
 
@@ -33,8 +33,8 @@ class Game:
             self.screen.fill((0, 0, 0))
 
             # Draw the button and health count
-            pygame.draw.rect(self.screen, (0, 0, 255), self.button)
-            self.screen.blit(self.button_text, self.button.center)
+            pygame.draw.rect(self.screen, (128, 128, 128), self.button)
+            self.screen.blit(self.button_text, (17, 422, 120, 40))
             health_count_text = pygame.font.SysFont('Arial', 24).render(f'Health Count: {self.health_count}', True, (255, 255, 255))
             self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 10, 10))
 
@@ -46,19 +46,35 @@ class Game:
             pygame.display.flip()
             self.clock.tick(self.fps)
 
-class Healthy(pygame.sprite.Sprite):
-    def __init__(self, screen, screen_width, health_count):
-        super().__init__()
-        self.screen = screen
-        self.screen_width = screen_width
-        self.health_count = health_count
-        self.image = pygame.Surface((30, 30))
-        self.image.fill((0, 255, 0))
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(0, 640), random.randint(0, 480))
-
-    def update(self):
-        self.rect.move_ip(random.randint(-5, 5), random.randint(-5, 5))
+class Healthy:
+    def __init__(self):
+        self.x = 0 # starting x position
+        self.y = 0 # starting y position
+        self.animation_index = 0 # Starting animation index
+        self.animation_frames = [
+            # List of 3 images for each animation direction
+            ["running_up_1.png", "running_up_2.png", "running_up_3.png"],
+            ["running_down_1.png", "running_down_2.png", "running_down_3.png"],
+            ["running_left_1.png", "running_left_2.png", "running_left_3.png"],
+            ["running_right_1.png", "running_right_2.png", "running_right_3.png"]
+        ]
+        
+    def move_randomly(self): # Randomly moves character by one unit in x or y
+        dx = random.choice([-1, 0, 1])
+        dy = random.choice([-1, 0, 1])
+        self.x += dx
+        self.y += dy
+    
+    def animate(self): # Displays the animation frame of the character
+        animation_frame = self.animation_frames[self.animation_index]
+        for row in animation_frame:
+            print(''.join(row))
+        self.animation_index = (self.animation_index + 1) % len(self.animation_frames)
+    
+    def run(self): # Calls the move_randomly and animate methods in loop, so the character seems to move around.
+        while True:
+            self.move_randomly()
+            self.animate()
 
 # Create and run the game
 game = Game()
