@@ -27,6 +27,7 @@ class Game:
         # Create a button for adding healthy objects and set its text
         self.button = pygame.Rect(10, 420, 120, 40)
         self.button_text = pygame.font.SysFont('Arial' , 24).render('Add Healthy', True, (255, 255, 255))
+        self.add_healthy = False
 
     # Run the game
     def run(self):
@@ -38,10 +39,13 @@ class Game:
                     running = False
                 # If the mouse button is clicked on the button, add a new Healthy object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
-                    # Add a new Healthy object
-                    new_healthy = Healthy 
-                    self.all_sprites.add(new_healthy)
-                    self.health_count += 1
+                    self.add_healthy = False
+
+            if self.add_healthy:
+                new_healthy = Healthy()
+                self.add.sprites.add(new_healthy)
+                self.health_count += 1
+                self.add_healthy = False
 
             # Clear the screen
             self.screen.fill((0, 0, 0))
@@ -98,7 +102,6 @@ class Healthy:
         while True:
             self.move_randomly()
             self.animate()
-
 
 # Create and run the game
 game = Game()
