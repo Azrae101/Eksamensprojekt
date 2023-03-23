@@ -41,6 +41,7 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
                     self.add_healthy = True
 
+# def add() ?
             if self.add_healthy:
                 new_healthy = Healthy()
                 self.add.sprites.add(new_healthy)
