@@ -3,7 +3,7 @@
 # Import necessary libraries
 import pygame
 import sys
-import random 
+import random
 
 # Define the game class
 class Game:
@@ -68,7 +68,6 @@ class Game:
                 self.add_infected = False
 
             # Clear the screen
-            self.screen.fill((255, 255, 255))
             self.screen.fill((255, 255, 255))
 
             # BUTTONS #
@@ -143,7 +142,7 @@ class Healthy(pygame.sprite.Sprite):
 
 # Define the infected class, which is a sprite:
 class Infected(pygame.sprite.Sprite):
-# Initialize the Healthy object
+# Initialize the infected object
     def __init__(self):
         super().init() # Maybe __init__?
         # Load the images for the animations
