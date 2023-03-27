@@ -3,7 +3,7 @@
 # Import necessary libraries
 import pygame
 import sys
-import random 
+import random
 
 # Define the game class
 class Game:
@@ -62,19 +62,18 @@ class Game:
 
             # Clear the screen
             self.screen.fill((255, 255, 255))
-            self.screen.fill((255, 255, 255))
 
             # BUTTONS #
             # Draw the healthy button and health count
             pygame.draw.rect(self.screen, (128, 128, 128), self.button)
-            self.screen.blit(self.button_text, (17, 422, 120, 40))
-            health_count_text = pygame.font.SysFont('Arial', 24).render(f'Health Count: {self.health_count}', True, (0, 0, 0))
+            self.screen.blit(self.button_text, (17, 422))
+            health_count_text = pygame.font.SysFont('Arial', 24).render(f'Healthy Count: {self.health_count}', True, (255, 255, 255))
             self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 10, 10))
 
             # Draw the infected button and infected count
             pygame.draw.rect(self.screen, (128, 128, 128), self.button_infected)
             self.screen.blit(self.button_infected_text, (207, 422))
-            infected_count_text = pygame.font.SysFont('Arial', 24).render(f'Infected Count: {self.infected_count}', True, (0, 0, 0))
+            infected_count_text = pygame.font.SysFont('Arial', 24).render(f'Infected Count: {self.infected_count}', True, (255, 255, 255))
             self.screen.blit(infected_count_text, (self.screen_width - infected_count_text.get_width() - 10, 40))
 
             # Update and draw all sprites
@@ -130,7 +129,7 @@ class Healthy(pygame.sprite.Sprite):
 
 # Define the infected class, which is a sprite:
 class Infected(pygame.sprite.Sprite):
-# Initialize the Healthy object
+# Initialize the infected object
     def __init__(self):
         super().init() # Maybe __init__?
         # Load the images for the animations
