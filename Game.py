@@ -171,6 +171,11 @@ class Game:
             self.all_sprites.update()
             self.all_sprites.draw(self.screen)
 
+            # Add some randomness to the positions of the rectangles
+            for sprite in self.all_sprites:
+                sprite.rect.x += random.randint(-5, 5)
+                sprite.rect.y += random.randint(-5, 5)
+
             # Update the screen
             pygame.display.flip()
 
