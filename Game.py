@@ -63,7 +63,8 @@ class Game:
         # Points
         self.button_points = pygame.Rect(self.screen_width - 218, self.screen_height - 616, 200, 270) # box position
         self.button_points_text = pygame.font.SysFont('Concolas', 35).render('POINTS', True, (40, 40, 40))
-
+        self.button_pointcounter_text = pygame.font.SysFont('Concolas', 40).render('{00}', True, (255, 255, 255)) # {counterlist}
+        
         # Count
         self.button_count = pygame.Rect(self.screen_width - 218, self.screen_height - 660, 200, 42) # box position
         self.button_count_text = pygame.font.SysFont('Concolas', 35).render('COUNT', True, (255, 255, 255))
@@ -120,6 +121,7 @@ class Game:
             pygame.draw.rect(self.screen, (50, 50, 50), self.button_points)
             # Points circle
             pygame.draw.circle(self.screen, (160, 0, 0), (self.screen_width - 118, self.screen_height - 205), 75)
+            self.screen.blit(self.button_pointcounter_text, (self.screen_width - 145, self.screen_height - 220)) # Moves button text
             self.screen.blit(self.button_points_text, (self.screen_width - 165, self.screen_height - 320)) # Moves button text
 
             # Draw the healthy button and health count
