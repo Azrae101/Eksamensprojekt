@@ -91,6 +91,9 @@ class Game:
                     self.add_infected = True # Infected button
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button_vaccinated.collidepoint(event.pos):
                     self.add_vaccinated = True # Vaccinated button
+                elif event.type == pygame.MOUSEBUTTONDOWN and self.button_quit.collidepoint(event.pos):
+                    pygame.quit
+                    quit()
 
             if self.add_healthy:
                 new_healthy = Healthy()
