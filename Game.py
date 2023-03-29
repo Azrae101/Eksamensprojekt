@@ -4,34 +4,6 @@
 import pygame
 import sys
 import random
-import os # Used to load the images
-
-# Get the full path to the images folder
-image_folder = os.path.join(os.path.dirname(__file__), 'images')
-
-# Load images for the player animation
-player_images = {
-    'up': [pygame.image.load(os.path.join(image_folder, "running_up_1.png")),
-           pygame.image.load(os.path.join(image_folder, "running_up_2.png")),
-           pygame.image.load(os.path.join(image_folder, "running_up_3.png"))],
-    'down': [pygame.image.load(os.path.join(image_folder, "running_down_1.png")),
-             pygame.image.load(os.path.join(image_folder, "running_down_2.png")),
-             pygame.image.load(os.path.join(image_folder, "running_down_3.png"))],
-    'left': [pygame.image.load(os.path.join(image_folder, "running_left_1.png")),
-             pygame.image.load(os.path.join(image_folder, "running_left_2.png")),
-             pygame.image.load(os.path.join(image_folder, "running_left_3.png"))],
-    'right': [pygame.image.load(os.path.join(image_folder, "running_right_1.png")),
-              pygame.image.load(os.path.join(image_folder, "running_right_2.png")),
-              pygame.image.load(os.path.join(image_folder, "running_right_3.png"))]
-}
-
-# Display the first image in the 'down' animation
-player_animation = player_images['down']
-player_frame = 0
-player_image = player_animation[player_frame]
-screen = pygame.display.set_mode((player_image.get_width(), player_image.get_height()))
-screen.blit(player_image, (0, 0))
-pygame.display.flip()
 
 # Define the game class
 class Game:
@@ -62,11 +34,63 @@ class Game:
         self.button_infected_text = pygame.font.SysFont('Arial' , 24).render('Add Infected', True, (255, 255, 255))
         self.add_infected = False
 
+    # Run the game
+    def run(self):
+        running = True
+        while running:
+            # Handle events
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                # If the mouse button is clicked on the button, add a new Healthy or Infected object
+                elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
+                    self.add_healthy = True
+                elif event.type == pygame.MOUSEBUTTONDOWN and self.button_infected.collidepoint(event.pos):
+                    self.add_infected = True
+
+            if self.add_healthy:
+                new_healthy = Healthy()
+                self.all_sprites.add(new_healthy)
+                self.health_count += 1
+                self.add_healthy = False
+            
+            if self.add_infected:
+                new_infected = Infected()
+                self.all_sprites.add(new_infected)
+                self.infected_count += 1
+                self.add_infected = False
+
+            # Clear the screen
+            self.screen.fill((255, 255, 255))
+
+            # BUTTONS #
+            # Draw the healthy button and health count
+            pygame.draw.rect(self.screen, (128, 128, 128), self.button)
+            self.screen.blit(self.button_text, (17, 422))
+            health_count_text = pygame.font.SysFont('Arial', 24).render(f'Healthy Count: {self.health_count}', True, (255, 255, 255))
+            self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 10, 10))
+
+            # Draw the infected button and infected count
+            pygame.draw.rect(self.screen, (128, 128, 128), self.button_infected)
+            self.screen.blit(self.button_infected_text, (207, 422))
+            infected_count_text = pygame.font.SysFont('Arial', 24).render(f'Infected Count: {self.infected_count}', True, (255, 255, 255))
+            self.screen.blit(infected_count_text, (self.screen_width - infected_count_text.get_width() - 10, 40))
+
+            # Update and draw all sprites
+            self.all_sprites.update()
+            self.all_sprites.draw(self.screen)
+
+            # Update the screen
+            pygame.display.flip()
+
+            # Control the FPS
+            self.clock.tick(self.fps)
+
 # Define the healthy class, which is a sprite:
 class Healthy(pygame.sprite.Sprite):
 # Initialize the Healthy object
     def __init__(self):
-        super().__init__()
+        super().init()
         # Load the images for the animations
         self.animation_frames = {
         'up': [pygame.image.load("running_up_1.png"), pygame.image.load("running_up_2.png"), pygame.image.load("running_up_3.png")],
@@ -107,7 +131,7 @@ class Healthy(pygame.sprite.Sprite):
 class Infected(pygame.sprite.Sprite):
 # Initialize the infected object
     def __init__(self):
-        super().__init__()
+        super().init() # Maybe __init__?
         # Load the images for the animations
         self.animation_frames = {
         'up': [pygame.image.load("running_up_1.png"), pygame.image.load("running_up_2.png"), pygame.image.load("running_up_3.png")],
@@ -143,70 +167,6 @@ class Infected(pygame.sprite.Sprite):
         while True:
             self.move_randomly()
             self.animate()
-
-    ### Run the game
-    def run(self):
-        running = True
-        while running:
-            # Handle events
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
-                    quit()
-                # If the mouse button is clicked on the button, add a new Healthy or Infected object
-                elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
-                    self.add_healthy = True
-                elif event.type == pygame.MOUSEBUTTONDOWN and self.button_infected.collidepoint(event.pos):
-                    self.add_infected = True
-
-            if self.add_healthy:
-                new_healthy = Healthy()
-                self.all_sprites.add(new_healthy)
-                self.health_count += 1
-                print(self.health_count)
-                self.add_healthy = False
-            
-            if self.add_infected:
-                new_infected = Infected()
-                self.all_sprites.add(new_infected)
-                self.infected_count += 1
-                print(self.health_count)
-                self.add_infected = False
-
-            # Update the player animation
-            player_frame = (player_frame + 1) % len(player_animation)
-            player_image = player_animation[player_frame]
-            
-            # Draw the player image
-            screen.blit(player_image, (0, 0))
-            pygame.display.flip()
-
-            # Clear the screen
-            self.screen.fill((255, 255, 255))
-
-            # BUTTONS #
-            # Draw the healthy button and health count
-            pygame.draw.rect(self.screen, (128, 128, 128), self.button)
-            self.screen.blit(self.button_text, (17, 422))
-            health_count_text = pygame.font.SysFont('Arial', 24).render(f'Healthy Count: {self.health_count}', True, (255, 255, 255))
-            self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 10, 10))
-
-            # Draw the infected button and infected count
-            pygame.draw.rect(self.screen, (128, 128, 128), self.button_infected)
-            self.screen.blit(self.button_infected_text, (207, 422))
-            infected_count_text = pygame.font.SysFont('Arial', 24).render(f'Infected Count: {self.infected_count}', True, (255, 255, 255))
-            self.screen.blit(infected_count_text, (self.screen_width - infected_count_text.get_width() - 10, 40))
-
-            # Update and draw all sprites
-            self.all_sprites.update()
-            self.all_sprites.draw(self.screen)
-
-            # Update the screen
-            pygame.display.flip()
-
-            # Control the FPS
-            self.clock.tick(self.fps)
 
 # Create a game instance and run the game
 game = Game()
