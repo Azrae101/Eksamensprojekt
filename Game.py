@@ -68,9 +68,11 @@ class Game:
                     running = False
                 # If the mouse button is clicked on the button, add a new Healthy or Infected object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
-                    self.add_healthy = True
+                    self.add_healthy = True # Healthy button
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button_infected.collidepoint(event.pos):
-                    self.add_infected = True
+                    self.add_infected = True # Infected button
+                elif event.type == pygame.MOUSEBUTTONDOWN and self.button_vaccinated.collidepoint(event.pos):
+                    self.add_vaccinated = True # Vaccinated button
 
             if self.add_healthy:
                 new_healthy = Healthy()
