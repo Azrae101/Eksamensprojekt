@@ -1,5 +1,48 @@
 # Here the game is tested
 
+# Animations:
+'''
+        super().__init__()
+        # Load the images for the animations
+        self.animation_frames = {
+        'up': [pygame.image.load("running_up_1.png"), pygame.image.load("running_up_2.png"), pygame.image.load("running_up_3.png")],
+        'down': [pygame.image.load("running_down_1.png"), pygame.image.load("running_down_2.png"), pygame.image.load("running_down_3.png")],
+        'left': [pygame.image.load("running_left_1.png"), pygame.image.load("running_left_2.png"), pygame.image.load("running_left_3.png")],
+        'right': [pygame.image.load("running_right_1.png"), pygame.image.load("running_right_2.png"), pygame.image.load("running_right_3.png")],
+        }
+        self.direction = 'down' # Set the initial direction
+        self.animation_index = 0 # Starting animation index
+        self.image = self.animation_frames[self.direction][self.animation_index] # Set the initial image
+        self.rect = self.image.get_rect() # Set the rect for the sprite
+'''
+
+# After each class:
+'''
+        # Set the initial position of the Infected object
+        self.rect.x = 0 # starting x position
+        self.rect.y = 0 # starting y position
+        
+    def move_randomly(self): # Randomly moves character by one unit in x or y
+        dx = random.choice([-1, 0, 1])
+        dy = random.choice([-1, 0, 1])
+        self.rect.x += dx
+        self.rect.y += dy
+
+    # Update the Infected object
+    def update(self):
+        # Move the Infected object randomly
+        self.move_randomly()
+
+        # Animate the Infected object
+        self.animation_index = (self.animation_index + 1) % len(self.animation_frames[self.direction])
+        self.image = self.animation_frames[self.direction][self.animation_index]
+
+    def run(self): # Calls the move_randomly and animate methods in loop, so the character seems to move around.
+        while True:
+            self.move_randomly()
+            self.animate()
+'''
+        
 # Game class
 
 # Import necessary libraries
