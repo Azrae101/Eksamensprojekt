@@ -77,9 +77,11 @@ class Game:
                     running = False
                 # If the mouse button is clicked on the button, add a new Healthy or Infected object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
-                    self.add_healthy = True
+                    self.add_healthy = True # Healthy button
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button_infected.collidepoint(event.pos):
-                    self.add_infected = True
+                    self.add_infected = True # Infected button
+                elif event.type == pygame.MOUSEBUTTONDOWN and self.button_vaccinated.collidepoint(event.pos):
+                    self.add_vaccinated = True # Vaccinated button
 
             if self.add_healthy:
                 new_healthy = Healthy()
@@ -238,6 +240,47 @@ class Infected(pygame.sprite.Sprite):
         self.move_randomly()
 
         # Animate the Infected object
+        self.animation_index = (self.animation_index + 1) % len(self.animation_frames[self.direction])
+        self.image = self.animation_frames[self.direction][self.animation_index]
+
+    def run(self): # Calls the move_randomly and animate methods in loop, so the character seems to move around.
+        while True:
+            self.move_randomly()
+            self.animate()
+
+# Define the Vaccinated class, which is a sprite:
+class Vaccinated(pygame.sprite.Sprite):
+# Initialize the Vaccinated object
+    def __init__(self):
+        super().init()
+        # Load the images for the animations
+        self.animation_frames = {
+        'up': [pygame.image.load("running_up_1.png"), pygame.image.load("running_up_2.png"), pygame.image.load("running_up_3.png")],
+        'down': [pygame.image.load("running_down_1.png"), pygame.image.load("running_down_2.png"), pygame.image.load("running_down_3.png")],
+        'left': [pygame.image.load("running_left_1.png"), pygame.image.load("running_left_2.png"), pygame.image.load("running_left_3.png")],
+        'right': [pygame.image.load("running_right_1.png"), pygame.image.load("running_right_2.png"), pygame.image.load("running_right_3.png")],
+        }
+        self.direction = 'down' # Set the initial direction
+        self.animation_index = 0 # Starting animation index
+        self.image = self.animation_frames[self.direction][self.animation_index] # Set the initial image
+        self.rect = self.image.get_rect() # Set the rect for the sprite
+
+        # Set the initial position of the Vaccinated object
+        self.rect.x = 0 # starting x position
+        self.rect.y = 0 # starting y position
+        
+    def move_randomly(self): # Randomly moves character by one unit in x or y
+        dx = random.choice([-1, 0, 1])
+        dy = random.choice([-1, 0, 1])
+        self.rect.x += dx
+        self.rect.y += dy
+
+    # Update the Vaccinated object
+    def update(self):
+        # Move the Vaccinated object randomly
+        self.move_randomly()
+
+        # Animate the Vaccinated object
         self.animation_index = (self.animation_index + 1) % len(self.animation_frames[self.direction])
         self.image = self.animation_frames[self.direction][self.animation_index]
 
