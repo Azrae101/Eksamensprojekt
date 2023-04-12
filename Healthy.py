@@ -13,18 +13,10 @@ class Healthy(pygame.sprite.Sprite):
         
         self.image_list.append(self.image) # Add the first image to the list
         
-        self.image_list.append(pygame.image.load('Images_healthy/healthy1.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy2.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy3.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy4.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy5.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy6.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy7.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy8.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy9.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy10.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy11.png'))
-        self.image_list.append(pygame.image.load('Images_healthy/healthy12.png'))
+        for i in range(1, 13):
+            for j in range(1, 4):
+                filename = f'Images_healthy/healthy{j}{i}.png'
+                self.image_list.append(pygame.image.load(filename))
         
         self.image_index = 0 # Index of the current image in the list
         self.animation_speed = 10 # How many game frames per image change
