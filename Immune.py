@@ -38,7 +38,7 @@ class Immune:
         elif self.y > self.healthy.y:
             self.y -= 1
     
-     def animate(self):
+    def animate(self):
         animation_frame = self.animation_frames[self.animation_index]
         for row in animation_frame:
             print(''.join(row))

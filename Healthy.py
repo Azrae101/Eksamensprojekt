@@ -4,7 +4,8 @@ class Healthy:
     def __init__(self):
         self.x = 0 # starting x position
         self.y = 0 # starting y position
-        self.animation_index = 0 # Starting animation index
+        # self.animation_index = 0 # Starting animation index
+        '''
         self.animation_frames = [
             # List of 3 images for each animation direction
             ["running_up_1.png", "running_up_2.png", "running_up_3.png"],
@@ -12,6 +13,7 @@ class Healthy:
             ["running_left_1.png", "running_left_2.png", "running_left_3.png"],
             ["running_right_1.png", "running_right_2.png", "running_right_3.png"]
         ]
+        '''
         
     def move_randomly(self): # Randomly moves character by one unit in x or y
         dx = random.choice([-1, 0, 1])
