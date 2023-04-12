@@ -13,18 +13,9 @@ class Immune(pygame.sprite.Sprite):
         
         self.image_list.append(self.image) # Add the first image to the list
         
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune1.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune2.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune3.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune4.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune5.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune6.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune7.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune8.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune9.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune10.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune11.png'))
-        self.image_list.append(pygame.image.load('Images_vaccinated/immune12.png'))
+        for i in range(1, 12):
+            filename = f"Images_vaccinated/immune{i}.png"
+            self.image_list.append(pygame.image.load(filename))
 
         self.image_index = 0 # Index of the current image in the list
         self.animation_speed = 10 # How many game frames per image change

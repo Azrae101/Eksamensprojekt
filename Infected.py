@@ -13,18 +13,9 @@ class Infected(pygame.sprite.Sprite):
         
         self.image_list.append(self.image) # Add the first image to the list
         
-        self.image_list.append(pygame.image.load('Images_infected/infected1.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected2.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected3.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected4.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected5.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected6.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected7.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected8.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected9.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected10.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected11.png'))
-        self.image_list.append(pygame.image.load('Images_infected/infected12.png'))
+        for i in range(1, 12):
+            filename = f"Images_infected/infected{i}.png"
+            self.image_list.append(pygame.image.load(filename))
 
         self.image_index = 0 # Index of the current image in the list
         self.animation_speed = 10 # How many game frames per image change
