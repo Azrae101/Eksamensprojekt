@@ -6,6 +6,14 @@ import sys
 import random
 import os
 
+# Import other python programmes
+from Healthy import Healthy
+from Infected import Infected
+from Immune import Immune
+
+# Definitions
+characters = 0
+
 # Define the game class
 class Game:
     # Initialize the game
@@ -72,14 +80,8 @@ class Game:
     # Run the game
     def run(self):
         running = True
+        characters = 0
         while running:
-
-            # Get the full path to the images folder
-            # image_folder = os.path.join(os.path.dirname(__file__), 'images')
-
-            # Load images:
-            # healthy_img = pygame.image.load(os.path.join(image_folder, "running_up_1.png"))
-
             # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -95,26 +97,26 @@ class Game:
                     pygame.quit
                     quit()
 
-            if self.add_healthy:
+            if self.add_healthy and characters < 50:
                 new_healthy = Healthy()
                 self.all_sprites.add(new_healthy)
                 self.health_count += 1
                 self.add_healthy = False
-                # print("healthy: " + str(self.health_count))
 
-            if self.add_infected:
+            if self.add_infected and characters < 50:
                 new_infected = Infected()
                 self.all_sprites.add(new_infected)
                 self.infected_count += 1
                 self.add_infected = False
-                # print("infected: " + str(self.infected_count))
 
-            if self.add_vaccinated:
-                new_vaccinated = Vaccinated()
+            if self.add_vaccinated and characters < 50:
+                new_vaccinated = Immune()
                 self.all_sprites.add(new_vaccinated)
                 self.vaccinated_count += 1
                 self.add_vaccinated = False
-                # print("vaccinated: " + str(self.vaccinated_count))
+
+            # Counting characters:
+            characters = self.health_count + self.infected_count + self.vaccinated_count
 
             # Clear the screen
             self.screen.fill((255, 255, 255))
@@ -176,10 +178,17 @@ class Game:
             self.all_sprites.update()
             self.all_sprites.draw(self.screen)
 
-            # Add some randomness to the positions of the rectangles
-            for sprite in self.all_sprites:
-                sprite.rect.x += random.randint(-5, 5)
-                sprite.rect.y += random.randint(-5, 5)
+            # Update the Healthy objects
+            healthy_group.update()
+            healthy_group.draw(self.screen)
+
+            # Update the Infected objects
+            infected_group.update()
+            infected_group.draw(self.screen)
+
+            # Update the Immune objects
+            immune_group.update()
+            immune_group.draw(self.screen)
 
             # Update the screen
             pygame.display.flip()
@@ -187,35 +196,14 @@ class Game:
             # Control the FPS
             self.clock.tick(self.fps)
 
-# Define the healthy class, which is a sprite:
-class Healthy(pygame.sprite.Sprite):
-# Initialize the Healthy object
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((50, 200, 50))
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+# Create a group for the Healthy objects
+healthy_group = pygame.sprite.Group()
 
-# Define the infected class, which is a sprite:
-class Infected(pygame.sprite.Sprite):
-# Initialize the infected object
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((200, 50, 50))
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+# Create a group for the infected objects
+infected_group = pygame.sprite.Group()
 
-# Define the Vaccinated class, which is a sprite:
-class Vaccinated(pygame.sprite.Sprite):
-# Initialize the Vaccinated object
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((50, 50, 200))
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+# Create a group for the immune objects
+immune_group = pygame.sprite.Group()
             
 # Create a game instance and run the game
 game = Game()
