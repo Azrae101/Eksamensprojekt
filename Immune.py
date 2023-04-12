@@ -1,46 +1,41 @@
+import pygame
 import random
 
-class Immune:
-    def __init__(self, healthy):
-        self.x = 0
-        self.y = 0
-        self.animation_index = 0
-        self.animation_frames = [
-            # Replace the placeholder values with your animation frames
-            # Each frame should be a 3x3 matrix of characters representing the animation image
-            [[' ', 'X', ' '],
-             ['\\', '|', '/'],
-             ['/', ' ', '\\']],
-             
-            [[' ', 'X', ' '],
-             ['/', '|', '\\'],
-             ['\\', ' ', '/']],
-             
-            [[' ', 'X', ' '],
-             ['|', 'V', '|'],
-             ['/', ' ', '\\']]
-        ]
-        self.healthy = healthy
-    
-    def move_randomly(self):
-        dx = random.choice([-1, 0, 1])
-        dy = random.choice([-1, 0, 1])
-        self.x += dx
-        self.y += dy
-    
-    def chase_healthy(self):
-        if self.x < self.healthy.x:
-            self.x += 1
-        elif self.x > self.healthy.x:
-            self.x -= 1
-        if self.y < self.healthy.y:
-            self.y += 1
-        elif self.y > self.healthy.y:
-            self.y -= 1
-    
-    def animate(self):
-        animation_frame = self.animation_frames[self.animation_index]
-        for row in animation_frame:
-            print(''.join(row))
-        self.animation_index = (self.animation_index + 1) % len(self.animation_frames)
+# Define the healthy class, which is a sprite:
+class Immune(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.original_image = pygame.image.load('Images_vaccinated/immune1.png')
+        self.image = pygame.transform.scale(self.original_image, (35, 70))
+        self.rect = self.image.get_rect()
+        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+        self.image_list = [] # List to hold the different images
         
+        self.image_list.append(self.image) # Add the first image to the list
+        
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune1.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune2.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune3.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune4.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune5.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune6.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune7.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune8.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune9.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune10.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune11.png'))
+        self.image_list.append(pygame.image.load('Images_vaccinated/immune12.png'))
+
+        self.image_index = 0 # Index of the current image in the list
+        self.animation_speed = 10 # How many game frames per image change
+        self.frame_count = 0 # Counter for the current frame in the animation
+
+    def update(self):
+        # Update the frame count
+        self.frame_count += 1
+        if self.frame_count >= self.animation_speed:
+            self.frame_count = 0
+            self.image_index += 1
+            if self.image_index >= len(self.image_list):
+                self.image_index = 0
+            self.image = self.image_list[self.image_index]
