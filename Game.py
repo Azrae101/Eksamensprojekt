@@ -6,9 +6,9 @@ import random
 import os
 
 # Import other python programmes
-#from healthy import Healthy 
-#from infected import Infected
-#from vaccinated import Vaccinated
+from Healthy import Healthy
+from Infected import Infected
+from Immune import Immune
 
 # Definitions
 characters = 0
@@ -110,18 +110,13 @@ class Game:
                 self.add_infected = False
 
             if self.add_vaccinated and characters < 50:
-                new_vaccinated = Vaccinated()
+                new_vaccinated = Immune()
                 self.all_sprites.add(new_vaccinated)
                 self.vaccinated_count += 1
                 self.add_vaccinated = False
 
             # Counting characters:
             characters = self.health_count + self.infected_count + self.vaccinated_count
-            
-            #if self.add_point:
-                #self.point_count += 1
-                #self.add_point = False
-                # print("point: " + str(self.point_count))
 
             # Clear the screen
             self.screen.fill((255, 255, 255))
@@ -196,10 +191,17 @@ class Game:
             self.all_sprites.update()
             self.all_sprites.draw(self.screen)
 
-            # Add some randomness to the positions of the rectangles
-            #for sprite in self.all_sprites:
-            #    sprite.rect.x += random.randint(-5, 5)
-            #    sprite.rect.y += random.randint(-5, 5)
+            # Update the Healthy objects
+            healthy_group.update()
+            healthy_group.draw(self.screen)
+
+            # Update the Infected objects
+            infected_group.update()
+            infected_group.draw(self.screen)
+
+            # Update the Immune objects
+            immune_group.update()
+            immune_group.draw(self.screen)
 
             # Update the screen
             pygame.display.flip()
@@ -207,35 +209,14 @@ class Game:
             # Control the FPS
             self.clock.tick(self.fps)
 
-# Define the healthy class, which is a sprite:
-class Healthy(pygame.sprite.Sprite):
-    # Initialize the Healthy object
-    def __init__(self):
-        super().__init__()
-        self.original_image = pygame.image.load('Images_healthy/healthy.png')
-        self.image = pygame.transform.scale(self.original_image, (35, 70)) # Scale the image
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+# Create a group for the Healthy objects
+healthy_group = pygame.sprite.Group()
 
-# Define the infected class, which is a sprite:
-class Infected(pygame.sprite.Sprite):
-# Initialize the infected object
-    def __init__(self):
-        super().__init__()
-        self.original_image = pygame.image.load("Images_infected/infected.png") # Load the image
-        self.image = pygame.transform.scale(self.original_image, (35, 70)) # Scale the image
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+# Create a group for the infected objects
+infected_group = pygame.sprite.Group()
 
-# Define the Vaccinated class, which is a sprite:
-class Vaccinated(pygame.sprite.Sprite):
-# Initialize the Vaccinated object
-    def __init__(self):
-        super().__init__()
-        self.original_image = pygame.image.load("Images_vaccinated/immune.png") # Load the image
-        self.image = pygame.transform.scale(self.original_image, (35, 70)) # Scale the image
-        self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+# Create a group for the immune objects
+immune_group = pygame.sprite.Group()
             
 # Create a game instance and run the game
 game = Game()
