@@ -8,7 +8,8 @@ class Healthy(pygame.sprite.Sprite):
         self.original_image = pygame.image.load('Images_healthy/healthy.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
         self.rect = self.image.get_rect()
-        self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
+        #placement
+        self.rect.center = (random.randint(50, 890)), random.randint(50, 680)
         self.image_list = [] # List to hold the different images
         
         self.image_list.append(self.image) # Add the first image to the list
