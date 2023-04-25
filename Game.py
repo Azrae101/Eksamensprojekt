@@ -38,6 +38,9 @@ class Game:
         self.point_count = 0
         self.all_sprites = pygame.sprite.Group()
 
+        # Creates spawn window
+        self.spawn = pygame.Rect(self.screen_width - 1140, self.screen_height - 680, 920, 575) # box position
+
         # Create a button for adding healthy objects and set its text
         self.button = pygame.Rect(self.screen_width - 1120, self.screen_height - 100, 280, 90) # box position
         self.button_text = pygame.font.SysFont('Concolas' , 35).render('ADD HEALTHY', True, (106, 168, 79))
@@ -128,6 +131,9 @@ class Game:
             pygame.draw.circle(self.screen, (160, 0, 0), (self.screen_width - 118, self.screen_height - 205), 75)
             self.screen.blit(self.button_pointcounter_text, (self.screen_width - 128, self.screen_height - 220)) # Moves button text
             self.screen.blit(self.button_points_text, (self.screen_width - 165, self.screen_height - 320)) # Moves button text
+
+            # Draw spawn_window
+            pygame.draw.rect(self.screen, (253, 253, 253), self.spawn) 
 
             # Draw the healthy button and health count
             pygame.draw.rect(self.screen, (255, 255, 255), self.button) 
