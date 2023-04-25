@@ -14,20 +14,54 @@ class Healthy(pygame.sprite.Sprite):
         
         self.image_list.append(self.image) # Add the first image to the list
         
-        for i in range(1, 12):
-            filename = f"Images_healthy/healthy{i}.png"
-            self.image_list.append(pygame.image.load(filename))
-        
-        self.image_index = 0 # Index of the current image in the list
-        self.animation_speed = 10 # How many game frames per image change
-        self.frame_count = 0 # Counter for the current frame in the animation
+        self.image_list_down = [] # List to hold the different images for running down
+        self.image_list_up = [] # List to hold the different images for running up
+        self.image_list_left = [] # List to hold the different images for running left
+        self.image_list_right = [] # List to hold the different images for running right
+
+        # Running down:
+        for i in range(1, 4):
+            self.image_list_down.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
+
+        # Running up:
+        for i in range(10, 13):
+            self.image_list_up.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
+
+        # Running left:
+        for i in range(4, 7):
+            self.image_list_left.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
+
+        # Running right:
+        for i in range(7, 10):
+            self.image_list_right.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
+
+
+        self.direction = "down" # Default direction
 
     def update(self):
-        # Update the frame count
-        self.frame_count += 1
-        if self.frame_count >= self.animation_speed:
-            self.frame_count = 0
-            self.image_index += 1
-            if self.image_index >= len(self.image_list):
-                self.image_index = 0
-            self.image = self.image_list[self.image_index]
+        # Randomly change the direction of the sprite
+        if random.random() < 0.05: # 5% chance to change direction
+            directions = ["up", "down", "left", "right"]
+            directions.remove(self.direction) # Remove current direction
+            self.direction = random.choice(directions) # Choose a new direction at random
+        if self.direction == "down":
+            # Update the rect to move the sprite down
+            self.rect.move_ip(0, 1)
+            # Animate the sprite's movement
+            self.image = self.image_list_down[int(pygame.time.get_ticks() % 9 / 3)]
+        elif self.direction == "up":
+            # Update the rect to move the sprite up
+            self.rect.move_ip(0, -1)
+            # Animate the sprite's movement
+            self.image = self.image_list_up[int(pygame.time.get_ticks() % 9 / 3)]
+        elif self.direction == "left":
+            # Update the rect to move the sprite left
+            self.rect.move_ip(-1, 0)
+            # Animate the sprite's movement
+            self.image = self.image_list_left[int(pygame.time.get_ticks() % 9 / 3)]
+        elif self.direction == "right":
+            # Update the rect to move the sprite right
+            self.rect.move_ip(1, 0)
+            # Animate the sprite's movement
+            self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
+        
