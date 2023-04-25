@@ -40,6 +40,8 @@ class Game:
 
         # Creates spawn window
         self.spawn = pygame.Rect(self.screen_width - 1140, self.screen_height - 680, 920, 575) # box position
+        # x = 920
+        # y = 575
 
         # Create a button for adding healthy objects and set its text
         self.button = pygame.Rect(self.screen_width - 1120, self.screen_height - 100, 280, 90) # box position
