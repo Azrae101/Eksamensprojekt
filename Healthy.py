@@ -3,14 +3,11 @@ import random
 
 # Define the healthy class, which is a sprite:
 class Healthy(pygame.sprite.Sprite):
-    def __init__(self, spawn_rect):
+    def __init__(self):
         super().__init__()
         self.original_image = pygame.image.load('Images_healthy/healthy.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
-        self.rect = self.image.get_rect()
-        self.spawn_rect = spawn_rect
-        # placement
-        self.rect.center = (random.randint(self.spawn_rect.left, self.spawn_rect.right), random.randint(self.spawn_rect.top, self.spawn_rect.bottom))
+        self.rect = self.image.get_rect(topleft=(random.randint(50, 1090), random.randint(50, 630)))
         self.image_list = [] # List to hold the different images
         
         self.image_list.append(self.image) # Add the first image to the list
@@ -48,24 +45,21 @@ class Healthy(pygame.sprite.Sprite):
         if self.direction == "down":
             # Update the rect to move the sprite down
             self.rect.move_ip(0, 1)
-            # Check if the sprite has moved out of the spawn box and move it back in if it has
-            if not self.spawn_rect.contains(self.rect):
-                self.rect.bottom = self.spawn_rect.bottom
+            # Animate the sprite's movement
+            self.image = self.image_list_down[int(pygame.time.get_ticks() % 9 / 3)]
         elif self.direction == "up":
             # Update the rect to move the sprite up
             self.rect.move_ip(0, -1)
-            # Check if the sprite has moved out of the spawn box and move it back in if it has
-            if not self.spawn_rect.contains(self.rect):
-                self.rect.top = self.spawn_rect.top
+            # Animate the sprite's movement
+            self.image = self.image_list_up[int(pygame.time.get_ticks() % 9 / 3)]
         elif self.direction == "left":
             # Update the rect to move the sprite left
             self.rect.move_ip(-1, 0)
-            # Check if the sprite has moved out of the spawn box and move it back in if it has
-            if not self.spawn_rect.contains(self.rect):
-                self.rect.left = self.spawn_rect.left
+            # Animate the sprite's movement
+            self.image = self.image_list_left[int(pygame.time.get_ticks() % 9 / 3)]
         elif self.direction == "right":
             # Update the rect to move the sprite right
             self.rect.move_ip(1, 0)
-            # Check if the sprite has moved out of the spawn box and move it back in if it has
-            if not self.spawn_rect.contains(self.rect):
-                self.rect
+            # Animate the sprite's movement
+            self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
+        

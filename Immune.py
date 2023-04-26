@@ -7,7 +7,7 @@ class Immune(pygame.sprite.Sprite):
         super().__init__()
         self.original_image = pygame.image.load('Images_vaccinated/immune1.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(bottomleft=(random.randint(50, 1090), random.randint(50, 630)))
         self.rect.center = (random.randint(50, 1090), random.randint(50, 630))
         self.image_list = [] # List to hold the different images
         
