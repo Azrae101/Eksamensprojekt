@@ -25,6 +25,13 @@ class Game:
         self.screen_width = 1140
         self.screen_height = 680
 
+        # set caption
+        pygame.display.set_caption("test")
+        # load the image
+        gameIcon = pygame.image.load('Images_healthy/healthy.png')
+        # set icon
+        pygame.display.set_icon(gameIcon)
+
         # Set the screen and clock
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         self.clock = pygame.time.Clock()
@@ -37,6 +44,7 @@ class Game:
         self.dead_count = 0
         self.point_count = 0
         self.all_sprites = pygame.sprite.Group()
+        self.healthy_group = pygame.sprite.Group()
 
         # Creates spawn window
         self.spawn = pygame.Rect(self.screen_width - 1140, self.screen_height - 680, 920, 575) # box position
@@ -102,11 +110,18 @@ class Game:
                     pygame.quit
                     quit()
 
-            if self.add_healthy and characters < 50:
+            if self.add_healthy: #and characters < 50:
                 new_healthy = Healthy()
+                # new_healthy_rect = new_healthy.rect.collide # Skal ændres
+                # new_healthy_rect.x = self.screen_width/2
+                # new_healthy_rect.y = self.screen_height/2
                 self.all_sprites.add(new_healthy)
                 self.health_count += 1
                 self.add_healthy = False
+                self.healthy_group.add(new_healthy)
+                #ret = pygame.sprite.spritecollide(new_healthy, healthy_group, False, None)
+                #print(ret)
+                #print(self.healthy_group.sprites())
 
             if self.add_infected and characters < 50:
                 new_infected = Infected()
@@ -210,6 +225,10 @@ class Game:
             # Update the Immune objects
             immune_group.update()
             immune_group.draw(self.screen)
+
+            # Collision check
+            # if collisions:
+            #     print("A healthy sprite collided with an infected sprite!")
 
             # Update the screen
             pygame.display.flip()
