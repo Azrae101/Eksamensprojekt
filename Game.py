@@ -118,7 +118,6 @@ class Game:
                 self.add_healthy = False
                 self.healthy_group.add(new_healthy)
                 
-
             if self.add_infected and characters < 50:
                 new_infected = Infected()
                 self.all_sprites.add(new_infected)
@@ -240,10 +239,6 @@ class Game:
             # Update the Immune objects
             immune_group.update()
             immune_group.draw(self.screen)
-
-            # Collision check
-            # if collisions:
-            #     print("A healthy sprite collided with an infected sprite!")
 
             # Update the screen
             pygame.display.flip()

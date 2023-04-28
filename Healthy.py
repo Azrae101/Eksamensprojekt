@@ -34,7 +34,17 @@ class Healthy(pygame.sprite.Sprite):
         for i in range(7, 10):
             self.image_list_right.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
 
+    def reset_position(self):
+        # Set the initial position of the sprite randomly within the game window
+        x = random.randint(0, 800 - self.rect.width)
+        y = random.randint(0, 600 - self.rect.height)
+        self.rect.topleft = (x, y)
 
+        # Check for collisions with other sprites
+        while pygame.sprite.spritecollide(self, self.group, False):
+            self.rect.move_ip(random.randint(1, 5), random.randint(1, 5))
+
+'''
         self.direction = "down" # Default direction
 
     def update(self):
@@ -63,3 +73,5 @@ class Healthy(pygame.sprite.Sprite):
             self.rect.move_ip(1, 0)
             # Animate the sprite's movement
             self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
+
+'''
