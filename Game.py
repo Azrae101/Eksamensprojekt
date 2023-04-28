@@ -43,6 +43,7 @@ class Game:
         self.vaccinated_count = 0
         self.dead_count = 0
         self.point_count = 0
+        self.point_count = 0
         self.all_sprites = pygame.sprite.Group()
         self.healthy_group = pygame.sprite.Group()
 
@@ -110,18 +111,13 @@ class Game:
                     pygame.quit
                     quit()
 
-            if self.add_healthy: #and characters < 50:
+            if self.add_healthy and characters < 50:
                 new_healthy = Healthy()
-                # new_healthy_rect = new_healthy.rect.collide # Skal ændres
-                # new_healthy_rect.x = self.screen_width/2
-                # new_healthy_rect.y = self.screen_height/2
                 self.all_sprites.add(new_healthy)
                 self.health_count += 1
                 self.add_healthy = False
                 self.healthy_group.add(new_healthy)
-                #ret = pygame.sprite.spritecollide(new_healthy, healthy_group, False, None)
-                #print(ret)
-                #print(self.healthy_group.sprites())
+                
 
             if self.add_infected and characters < 50:
                 new_infected = Infected()
@@ -147,6 +143,7 @@ class Game:
             # Points circle
             pygame.draw.circle(self.screen, (160, 0, 0), (self.screen_width - 118, self.screen_height - 205), 75)
             self.screen.blit(self.button_pointcounter_text, (self.screen_width - 128, self.screen_height - 220)) # Moves button text
+            self.screen.blit(self.button_pointcounter_text, (self.screen_width - 128, self.screen_height - 220)) # Moves button text
             self.screen.blit(self.button_points_text, (self.screen_width - 165, self.screen_height - 320)) # Moves button text
 
             # Draw spawn_window
@@ -156,7 +153,11 @@ class Game:
             pygame.draw.rect(self.screen, (255, 255, 255), self.button) 
             self.screen.blit(self.button_text, (self.screen_width - 1062, self.screen_height - 70)) # Moves button text
             health_count_text = pygame.font.SysFont('Concolas', 32).render(f'HEALTHY:     ', True, (255, 255, 255))
+            health_count_text = pygame.font.SysFont('Concolas', 32).render(f'HEALTHY:     ', True, (255, 255, 255))
             self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 70, 95)) # Moves count text
+            # count 
+            health_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.health_count}', True, (255, 255, 255))
+            self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 30, 95)) # Moves count text
             # count 
             health_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.health_count}', True, (255, 255, 255))
             self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 30, 95)) # Moves count text
@@ -168,6 +169,12 @@ class Game:
             # Draw the infected button and infected count
             pygame.draw.rect(self.screen, (255, 255, 255), self.button_infected)
             self.screen.blit(self.button_infected_text, (self.screen_width - 772, self.screen_height - 70)) # Moves button text
+            infected_count_text = pygame.font.SysFont('Concolas', 32).render(f'INFECTED:    ', True, (255, 255, 255))
+            self.screen.blit(infected_count_text, (self.screen_width - infected_count_text.get_width() - 69, 155)) # Moves count text
+            # count
+            infected_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.infected_count}', True, (255, 255, 255))
+            self.screen.blit(infected_count_text, (self.screen_width - infected_count_text.get_width() - 30, 155)) # Moves count text
+
             infected_count_text = pygame.font.SysFont('Concolas', 32).render(f'INFECTED:    ', True, (255, 255, 255))
             self.screen.blit(infected_count_text, (self.screen_width - infected_count_text.get_width() - 69, 155)) # Moves count text
             # count
@@ -187,13 +194,21 @@ class Game:
             vaccinated_count_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.vaccinated_count}', True, (255, 255, 255))
             self.screen.blit(vaccinated_count_count_text, (self.screen_width - vaccinated_count_count_text.get_width() - 30, 215)) # Moves count text
             # makes borders
+            #count
+            vaccinated_count_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.vaccinated_count}', True, (255, 255, 255))
+            self.screen.blit(vaccinated_count_count_text, (self.screen_width - vaccinated_count_count_text.get_width() - 30, 215)) # Moves count text
+            # makes borders
             for i in range(4):
                 pygame.draw.rect(self.screen, (0,0,0), (self.screen_width - 520 -i,self.screen_height - 100 -i,260,85), 1)
             
             # Draw dead 
             pygame.draw.rect(self.screen, (255, 255, 255), self.button_dead)
             dead_count_text = pygame.font.SysFont('Concolas', 32).render(f'DEAD:     ', True, (255, 255, 255))
+            dead_count_text = pygame.font.SysFont('Concolas', 32).render(f'DEAD:     ', True, (255, 255, 255))
             self.screen.blit(dead_count_text, (self.screen_width - dead_count_text.get_width() - 110, 275)) # Moves dead text
+            # count
+            dead_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.dead_count}', True, (255, 255, 255))
+            self.screen.blit(dead_count_text, (self.screen_width - dead_count_text.get_width() - 30, 275)) # Moves dead text
             # count
             dead_count_text = pygame.font.SysFont('Concolas', 35).render(f'{self.dead_count}', True, (255, 255, 255))
             self.screen.blit(dead_count_text, (self.screen_width - dead_count_text.get_width() - 30, 275)) # Moves dead text

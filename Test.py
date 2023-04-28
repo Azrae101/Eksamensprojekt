@@ -3,11 +3,24 @@ import random
 
 # Define the Healthy class, which is a sprite:
 class Healthy(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, group):
         super().__init__()
         self.original_image = pygame.image.load('Images_healthy/healthy.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
-        self.rect = self.image.get_rect(topleft=(random.randint(195, 200), random.randint(195, 200)))
+        self.rect = self.image.get_rect()
+        self.group = group
+        self.reset_position()
+
+    def reset_position(self):
+        # Set the initial position of the sprite randomly within the game window
+        x = random.randint(0, 800 - self.rect.width)
+        y = random.randint(0, 600 - self.rect.height)
+        self.rect.topleft = (x, y)
+
+        # Check for collisions with other sprites
+        while pygame.sprite.spritecollide(self, self.group, False):
+            self.rect.move_ip(random.randint(1, 5), random.randint(1, 5))
+
 
 # Define the Game class
 class Game:
@@ -51,26 +64,15 @@ class Game:
 
             # Add new Healthy objects if the button is clicked
             if self.add_healthy:
-                new_healthy = Healthy()
+                new_healthy = Healthy(self.healthy_group)
                 self.all_sprites.add(new_healthy)
                 self.health_count += 1
                 self.add_healthy = False
                 self.healthy_group.add(new_healthy)
-                ret = pygame.sprite.spritecollideany(new_healthy, self.healthy_group)
-                print(ret)
-                print(self.healthy_group.sprites())
-
-                # if len(ret) > 1:
-                #     new_healthy.kill()
-                #     self.health_count -= 1
 
             # Update and draw all sprites
             self.all_sprites.update()
             self.all_sprites.draw(self.screen)
-
-            # Update the Healthy objects
-            healthy_group.update()
-            healthy_group.draw(self.screen)
 
             # Update the screen
             self.screen.fill((255, 255, 255))
@@ -86,8 +88,7 @@ class Game:
             pygame.display.flip()
 
         # Quit the game when the loop ends
-        pygame.quit()
-        quit()
+        pygame.quit()    
 
 # Create a group for the Healthy objects
 healthy_group = pygame.sprite.Group()

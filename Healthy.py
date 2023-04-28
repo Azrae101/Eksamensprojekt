@@ -7,7 +7,7 @@ class Healthy(pygame.sprite.Sprite):
         super().__init__()
         self.original_image = pygame.image.load('Images_healthy/healthy.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
-        self.rect = self.image.get_rect(topleft=(random.randint(50, 1090), random.randint(50, 630)))
+        self.rect = self.image.get_rect(topleft=(random.randint(50, 900), random.randint(50, 500)))
         #self.rect = self.image.get_rect(topleft=(100, 100))
         self.image_list = [] # List to hold the different images
         
@@ -43,24 +43,23 @@ class Healthy(pygame.sprite.Sprite):
             directions = ["up", "down", "left", "right"]
             directions.remove(self.direction) # Remove current direction
             self.direction = random.choice(directions) # Choose a new direction at random
-        if self.direction == "down":
+        if self.direction == "down" and self.rect.bottom < 550:
             # Update the rect to move the sprite down
             self.rect.move_ip(0, 1)
             # Animate the sprite's movement
             self.image = self.image_list_down[int(pygame.time.get_ticks() % 9 / 3)]
-        elif self.direction == "up":
+        elif self.direction == "up" and self.rect.top > 0:
             # Update the rect to move the sprite up
             self.rect.move_ip(0, -1)
             # Animate the sprite's movement
             self.image = self.image_list_up[int(pygame.time.get_ticks() % 9 / 3)]
-        elif self.direction == "left":
+        elif self.direction == "left" and self.rect.left > 0:
             # Update the rect to move the sprite left
             self.rect.move_ip(-1, 0)
             # Animate the sprite's movement
             self.image = self.image_list_left[int(pygame.time.get_ticks() % 9 / 3)]
-        elif self.direction == "right":
+        elif self.direction == "right" and self.rect.right < 900:
             # Update the rect to move the sprite right
             self.rect.move_ip(1, 0)
             # Animate the sprite's movement
             self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
-        
