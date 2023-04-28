@@ -117,12 +117,7 @@ class Game:
                 self.health_count += 1
                 self.add_healthy = False
                 self.healthy_group.add(new_healthy)
-                #ret = pygame.sprite.spritecollide(new_healthy, healthy_group, False, None)
-                #print(ret)
-                #print(self.healthy_group.sprites())
-                # new_healthy_rect = new_healthy.rect.collide # Skal ændres
-                # new_healthy_rect.x = self.screen_width/2
-                # new_healthy_rect.y = self.screen_height/2
+                
 
             if self.add_infected and characters < 50:
                 new_infected = Infected()
