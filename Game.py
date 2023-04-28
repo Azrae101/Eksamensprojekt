@@ -1,5 +1,4 @@
 # Game class #
-# Game class #
 # Import necessary libraries
 import pygame
 import sys
