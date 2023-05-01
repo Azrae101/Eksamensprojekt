@@ -9,6 +9,7 @@ import os
 from Healthy import Healthy
 from Infected import Infected
 from Immune import Immune
+from Dead import Dead
 
 # Definitions
 characters = 0
@@ -26,7 +27,7 @@ class Game:
         self.screen_height = 680
 
         # set caption
-        pygame.display.set_caption("test")
+        pygame.display.set_caption("Pandemic game")
         # load the image
         gameIcon = pygame.image.load('Images_healthy/healthy.png')
         # set icon
@@ -46,6 +47,9 @@ class Game:
         self.point_count = 0
         self.all_sprites = pygame.sprite.Group()
         self.healthy_group = pygame.sprite.Group()
+        self.infected_group = pygame.sprite.Group()
+        self.immune_group = pygame.sprite.Group()
+        self.dead_group = pygame.sprite.Group()
 
         # Creates spawn window
         self.spawn = pygame.Rect(self.screen_width - 1140, self.screen_height - 680, 920, 575) # box position
@@ -112,23 +116,118 @@ class Game:
                     quit()
 
             if self.add_healthy and characters < 50:
-                new_healthy = Healthy()
+                new_healthy = Healthy(self.healthy_group, self.all_sprites)
                 self.all_sprites.add(new_healthy)
                 self.health_count += 1
                 self.add_healthy = False
                 self.healthy_group.add(new_healthy)
                 
             if self.add_infected and characters < 50:
-                new_infected = Infected()
+                new_infected = Infected(self.infected_group, self.all_sprites)
                 self.all_sprites.add(new_infected)
                 self.infected_count += 1
                 self.add_infected = False
+                self.infected_group.add(new_infected)
 
             if self.add_vaccinated and characters < 50:
-                new_vaccinated = Immune()
+                new_vaccinated = Immune(self.immune_group, self.all_sprites)
                 self.all_sprites.add(new_vaccinated)
                 self.vaccinated_count += 1
                 self.add_vaccinated = False
+                self.immune_group.add(new_vaccinated)
+
+            if self.infected_count > 45:
+                if random.random() < 0.1:
+                    infected_sprite.kill()
+                    self.infected_count -= 1
+                    new_dead = Dead(self.dead_group, self.all_sprites)
+                    self.all_sprites.add(new_dead)
+                    self.dead_count += 1
+                    self.add_dead = False
+                    self.dead_group.add(new_dead)
+
+            if self.dead_count > random.randint(10,15):
+                for dead_sprite in self.dead_group:
+                    if random.random() < 0.1:
+                        dead_sprite.kill()
+                        self.dead_count -= 1
+
+            if self.health_count < 0:
+                self.health_count = 0
+            if self.infected_count < 0:
+                self.infected_count = 0
+            if self.vaccinated_count:
+                self.vaccinated_count = 0
+            if self.dead_count < 0:
+                self.dead_count = 0
+
+            # Check for collisions between the healthy group and the infected group
+            for healthy_sprite in self.healthy_group:
+                for infected_sprite in self.infected_group:
+                    if pygame.sprite.collide_rect(healthy_sprite, infected_sprite):
+                        # print("Collision detected between healthy sprite and infected sprite!")
+                        # coordinates = healthy_sprite.rect.topleft
+                        if random.random() < 0.1: # Infect healthy
+                            # Kill healthy sprite
+                            healthy_sprite.kill()
+                            self.health_count -= 1
+                            # Place new infected sprite
+                            new_infected = Infected(self.infected_group, self.all_sprites)
+                            self.all_sprites.add(new_infected)
+                            self.infected_count += 1
+                            self.add_infected = False
+                            self.infected_group.add(new_infected)
+                        if random.random() < 0.01: # Small change of curing infected
+                            # Kill infected sprite
+                            infected_sprite.kill()
+                            self.infected_count -= 1
+                            # Place new healthy:
+                            new_healthy = Healthy(self.healthy_group, self.all_sprites)
+                            self.all_sprites.add(new_healthy)
+                            self.health_count += 1
+                            self.add_healthy = False
+                            self.healthy_group.add(new_healthy)
+                            
+            # Check for collisions between the healthy group and the immune group
+            for healthy_sprite in self.healthy_group:
+                for immune_sprite in self.immune_group:
+                    if pygame.sprite.collide_rect(healthy_sprite, immune_sprite):
+                        # print("Collision detected between healthy sprite and immune sprite!")
+                        # The healthy object has a chance of turning into an immune sprite
+                        if random.random() < 0.01:
+                            # Kill healthy:
+                            healthy_sprite.kill()
+                            self.health_count -= 1
+                            # Spawn immune:
+                            new_vaccinated = Immune(self.immune_group, self.all_sprites)
+                            self.all_sprites.add(new_vaccinated)
+                            self.vaccinated_count += 1
+                            self.add_vaccinated = False
+                            self.immune_group.add(new_vaccinated)
+
+            # Check for collisions between the infected group and the immune group
+            for infected_sprite in self.infected_group:
+                for immune_sprite in self.immune_group:
+                    if pygame.sprite.collide_rect(infected_sprite, immune_sprite):
+                        # print("Collision detected between infected sprite and immune sprite!")
+                        if random.random() < 0.05:
+                            immune_sprite.kill()
+                            self.vaccinated_count -= 1
+                            # Spawn infected:
+                            new_infected = Infected(self.infected_group, self.all_sprites)
+                            self.all_sprites.add(new_infected)
+                            self.infected_count += 1
+                            self.add_infected = False
+                            self.infected_group.add(new_infected)
+                        elif random.random() < 0.05:
+                            infected_sprite.kill()
+                            self.infected_count -= 1
+                            # Spawn immune:
+                            new_vaccinated = Immune(self.immune_group, self.all_sprites)
+                            self.all_sprites.add(new_vaccinated)
+                            self.vaccinated_count += 1
+                            self.add_vaccinated = False
+                            self.immune_group.add(new_vaccinated)
 
             # Counting characters:
             characters = self.health_count + self.infected_count + self.vaccinated_count
@@ -229,16 +328,20 @@ class Game:
             self.all_sprites.draw(self.screen)
 
             # Update the Healthy objects
-            healthy_group.update()
-            healthy_group.draw(self.screen)
+            self.healthy_group.update()
+            self.healthy_group.draw(self.screen)
 
             # Update the Infected objects
-            infected_group.update()
-            infected_group.draw(self.screen)
+            self.infected_group.update()
+            self.infected_group.draw(self.screen)
 
             # Update the Immune objects
-            immune_group.update()
-            immune_group.draw(self.screen)
+            self.immune_group.update()
+            self.immune_group.draw(self.screen)
+
+            # Update the Immune objects
+            self.dead_group.update()
+            self.dead_group.draw(self.screen)
 
             # Update the screen
             pygame.display.flip()
@@ -254,6 +357,9 @@ infected_group = pygame.sprite.Group()
 
 # Create a group for the immune objects
 immune_group = pygame.sprite.Group()
+
+# Create a group for the dead objects
+dead_group = pygame.sprite.Group()
             
 # Create a game instance and run the game
 game = Game()
