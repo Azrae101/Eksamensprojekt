@@ -1,14 +1,17 @@
 import pygame
 import random
 
+
+
 # Define the healthy class, which is a sprite:
 class Healthy(pygame.sprite.Sprite):
-    def __init__(self):
+
+
+    def __init__(self, group, all_sprites):
         super().__init__()
         self.original_image = pygame.image.load('Images_healthy/healthy.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
         self.rect = self.image.get_rect(topleft=(random.randint(50, 900), random.randint(50, 500)))
-        #self.rect = self.image.get_rect(topleft=(100, 100))
         self.image_list = [] # List to hold the different images
         
         self.image_list.append(self.image) # Add the first image to the list
@@ -33,6 +36,10 @@ class Healthy(pygame.sprite.Sprite):
         # Running right:
         for i in range(7, 10):
             self.image_list_right.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
+        
+        self.group = group
+        self.all_sprites = all_sprites
+        self.reset_position()
 
     def reset_position(self):
         # Set the initial position of the sprite randomly within the game window
@@ -41,10 +48,9 @@ class Healthy(pygame.sprite.Sprite):
         self.rect.topleft = (x, y)
 
         # Check for collisions with other sprites
-        while pygame.sprite.spritecollide(self, self.group, False):
+        while pygame.sprite.spritecollide(self, self.all_sprites, False) and self.rect.bottom < 550 and self.rect.top > 0 and self.rect.left > 0 and self.rect.right < 900:
             self.rect.move_ip(random.randint(1, 5), random.randint(1, 5))
 
-'''
         self.direction = "down" # Default direction
 
     def update(self):
@@ -73,5 +79,13 @@ class Healthy(pygame.sprite.Sprite):
             self.rect.move_ip(1, 0)
             # Animate the sprite's movement
             self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
-
 '''
+        collisions = pygame.sprite.spritecollide(self, self.all_sprites, False)
+        
+        if len(collisions) < 0 and collisions[0] == self: # If not collision
+            print("not collision")
+        
+        # Check for collisions with other sprites in the group
+        if len(collisions) > 0 and collisions[0] != self:
+            print("collision")
+        '''
