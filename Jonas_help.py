@@ -53,13 +53,15 @@ while running:
     screen.fill((0,0,0))
 
     box_cols = pg.sprite.spritecollide(player,box_sprites, False)
+    if box_cols:
+        print("Colliding!!!", box_cols)
     for box in box_sprites:
         if box in box_cols:
             box.color = (200,20,20)
         else: # To make the boxes go back to the original color
             box.color = box.original_color
 
-    print(f"Colliding with {len(box_cols)} box(es)")
+    #print(f"Colliding with {len(box_cols)} box(es)")
 
     all_sprites.update()
     all_sprites.draw(screen)

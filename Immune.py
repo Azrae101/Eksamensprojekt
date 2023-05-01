@@ -3,7 +3,7 @@ import random
 
 # Define the healthy class, which is a sprite:
 class Immune(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, group, all_sprites):
         super().__init__()
         self.original_image = pygame.image.load('Images_vaccinated/immune.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
@@ -33,6 +33,21 @@ class Immune(pygame.sprite.Sprite):
         # Running right:
         for i in range(7, 10):
             self.image_list_right.append(pygame.image.load(f'Images_vaccinated/immune{i}.png'))
+        self.group = group
+        self.all_sprites = all_sprites
+        self.reset_position()
+
+    def reset_position(self):
+        # Set the initial position of the sprite randomly within the game window
+        x = random.randint(0, 800 - self.rect.width)
+        y = random.randint(0, 600 - self.rect.height)
+        self.rect.topleft = (x, y)
+
+        # Check for collisions with other sprites
+        attempts = 0
+        while pygame.sprite.spritecollide(self, self.all_sprites, False) and attempts < 10:
+            self.rect.move_ip(random.randint(1, 5), random.randint(1, 5))
+            attempts += 1
 
         self.direction = "down" # Default direction
 
@@ -62,3 +77,12 @@ class Immune(pygame.sprite.Sprite):
             self.rect.move_ip(1, 0)
             # Animate the sprite's movement
             self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
+'''
+        # Check for collisions with other sprites in the group
+        collisions = pygame.sprite.spritecollide(self, self.all_sprites, False)
+        if len(collisions) > 0 and collisions[0] != self:
+            # Move the sprite in a random direction to try to avoid collisions
+            print("Immune")
+            # Check again for collisions with other sprites in the group
+            collisions = pygame.sprite.spritecollide(self, self.group, False)
+'''
