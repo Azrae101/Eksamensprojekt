@@ -1,13 +1,17 @@
 import pygame
 import random
 
+
+
 # Define the healthy class, which is a sprite:
-class Infected(pygame.sprite.Sprite):
-    def __init__(self, group, all_sprites, coordinates=(random.randint(50, 900), random.randint(50, 500))):
+class Healthy(pygame.sprite.Sprite):
+
+
+    def __init__(self, group, all_sprites):
         super().__init__()
-        self.original_image = pygame.image.load('Images_infected/infected.png')
+        self.original_image = pygame.image.load('Images_healthy/healthy.png')
         self.image = pygame.transform.scale(self.original_image, (35, 70))
-        self.rect = self.image.get_rect(topleft=coordinates)
+        self.rect = self.image.get_rect(topleft=(random.randint(50, 900), random.randint(50, 500)))
         self.image_list = [] # List to hold the different images
         
         self.image_list.append(self.image) # Add the first image to the list
@@ -19,19 +23,19 @@ class Infected(pygame.sprite.Sprite):
 
         # Running down:
         for i in range(1, 4):
-            self.image_list_down.append(pygame.image.load(f'Images_infected/infected{i}.png'))
+            self.image_list_down.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
 
         # Running up:
         for i in range(10, 13):
-            self.image_list_up.append(pygame.image.load(f'Images_infected/infected{i}.png'))
+            self.image_list_up.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
 
         # Running left:
         for i in range(4, 7):
-            self.image_list_left.append(pygame.image.load(f'Images_infected/infected{i}.png'))
+            self.image_list_left.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
 
         # Running right:
         for i in range(7, 10):
-            self.image_list_right.append(pygame.image.load(f'Images_infected/infected{i}.png'))
+            self.image_list_right.append(pygame.image.load(f'Images_healthy/healthy{i}.png'))
         
         self.group = group
         self.all_sprites = all_sprites
@@ -44,10 +48,8 @@ class Infected(pygame.sprite.Sprite):
         self.rect.topleft = (x, y)
 
         # Check for collisions with other sprites
-        attempts = 0
-        while pygame.sprite.spritecollide(self, self.all_sprites, False) and attempts < 10:
+        while pygame.sprite.spritecollide(self, self.all_sprites, False) and self.rect.bottom < 550 and self.rect.top > 0 and self.rect.left > 0 and self.rect.right < 900:
             self.rect.move_ip(random.randint(1, 5), random.randint(1, 5))
-            attempts += 1
 
         self.direction = "down" # Default direction
 
@@ -78,12 +80,12 @@ class Infected(pygame.sprite.Sprite):
             # Animate the sprite's movement
             self.image = self.image_list_right[int(pygame.time.get_ticks() % 9 / 3)]
 '''
-        # Check for collisions with other sprites in the group
         collisions = pygame.sprite.spritecollide(self, self.all_sprites, False)
+        
+        if len(collisions) < 0 and collisions[0] == self: # If not collision
+            print("not collision")
+        
+        # Check for collisions with other sprites in the group
         if len(collisions) > 0 and collisions[0] != self:
-            # Move the sprite in a random direction to try to avoid collisions
-            print("Infected")
-            # Check again for collisions with other sprites in the group
-            collisions = pygame.sprite.spritecollide(self, self.group, False)
-
-'''
+            print("collision")
+        '''
