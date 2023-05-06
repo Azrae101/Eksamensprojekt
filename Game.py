@@ -44,7 +44,6 @@ class Game:
         self.vaccinated_count = 0
         self.dead_count = 0
         self.point_count = 0
-        self.point_count = 0
         self.all_sprites = pygame.sprite.Group()
         self.healthy_group = pygame.sprite.Group()
         self.infected_group = pygame.sprite.Group()
@@ -89,7 +88,6 @@ class Game:
         # Points
         self.button_points = pygame.Rect(self.screen_width - 218, self.screen_height - 616, 200, 270) # box position
         self.button_points_text = pygame.font.SysFont('Concolas', 35).render('POINTS', True, (40, 40, 40))
-        self.button_pointcounter_text = pygame.font.SysFont('Concolas', 50).render(f'{self.point_count}', True, (255, 255, 255))
         
         # Count
         self.button_count = pygame.Rect(self.screen_width - 218, self.screen_height - 660, 200, 42) # box position
@@ -156,7 +154,7 @@ class Game:
                 self.health_count = 0
             if self.infected_count < 0:
                 self.infected_count = 0
-            if self.vaccinated_count:
+            if self.vaccinated_count < 0:
                 self.vaccinated_count = 0
             if self.dead_count < 0:
                 self.dead_count = 0
@@ -239,6 +237,7 @@ class Game:
             # Draw the background for the counts & points button + point count and circle.
             pygame.draw.rect(self.screen, (50, 50, 50), self.button_points)
             # Points circle
+            self.button_pointcounter_text = pygame.font.SysFont('Concolas', 50).render(f'{self.vaccinated_count+self.health_count}', True, (255, 255, 255))
             pygame.draw.circle(self.screen, (160, 0, 0), (self.screen_width - 118, self.screen_height - 205), 75)
             self.screen.blit(self.button_pointcounter_text, (self.screen_width - 128, self.screen_height - 220)) # Moves button text
             self.screen.blit(self.button_pointcounter_text, (self.screen_width - 128, self.screen_height - 220)) # Moves button text
@@ -250,7 +249,6 @@ class Game:
             # Draw the healthy button and health count
             pygame.draw.rect(self.screen, (255, 255, 255), self.button) 
             self.screen.blit(self.button_text, (self.screen_width - 1062, self.screen_height - 70)) # Moves button text
-            health_count_text = pygame.font.SysFont('Concolas', 32).render(f'HEALTHY:     ', True, (255, 255, 255))
             health_count_text = pygame.font.SysFont('Concolas', 32).render(f'HEALTHY:     ', True, (255, 255, 255))
             self.screen.blit(health_count_text, (self.screen_width - health_count_text.get_width() - 70, 95)) # Moves count text
             # count 
