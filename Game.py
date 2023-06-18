@@ -102,6 +102,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                    
                 # If the mouse button is clicked on the button, add a new Healthy or Infected object
                 elif event.type == pygame.MOUSEBUTTONDOWN and self.button.collidepoint(event.pos):
                     self.add_healthy = True # Healthy button
